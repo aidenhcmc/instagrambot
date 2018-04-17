@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'instaboard.apps.InstaboardConfig',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
