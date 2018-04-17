@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  {% block title %}<title>Instabot</title>{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,300i" rel="stylesheet">
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/core.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app.min.css' %}">
+  <link rel="stylesheet" href="{% static 'style.min.css' %}">
+  
+  <link rel="apple-touch-icon" href="{% static 'img/apple-touch-icon.png' %}">
+  <link rel="icon" href="{% static 'img/favicon.png' %}">
+
+</head>
+  <body>
+    {% block content %}
+    {% endblock %}
+
+    <script src="{% static 'js/core.min.js' %}"></script>
+    <script src="{% static 'js/app.min.js' %}"></script>
+    <script src="{% static 'js/script.min.js' %}"></script>
+
+  </body>
+</html>
