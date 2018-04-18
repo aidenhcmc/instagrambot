@@ -177,11 +177,13 @@ class Bot(API):
     def login(self, **args):
         if self.proxy:
             args['proxy'] = self.proxy
-        if super(Bot, self).login(**args) is False:
+        response = super(Bot, self).login(**args)
+        if response is None:
             return False
-        self.prepare()
-        signal.signal(signal.SIGTERM, self.logout)
-        atexit.register(self.logout)
+        # self.prepare()
+        # signal.signal(signal.SIGTERM, self.logout)
+        # atexit.register(self.logout)
+        print(response.LastJson)
         return True
 
     def prepare(self):

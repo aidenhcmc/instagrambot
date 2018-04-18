@@ -5,35 +5,47 @@ from django.shortcuts import redirect
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-
+from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+from .utils import *
+from .models import Account
 
 from tools import Bot
-import argparse
+
+import json
 
 @login_required
 def index(request):
-  print(request.user.is_authenticated)
   if not request.user.is_authenticated:
     return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
 
-  # bot = Bot()
+  context = {
+    'latest_account': Account.objects.filter(user=request.user),
+  }
+  return render(request, 'index.html', context)
 
-  # parser = argparse.ArgumentParser(add_help=True)
-  # parser.add_argument('-u', type=str, help="username")
-  # parser.add_argument('-p', type=str, help="password")
-  # parser.add_argument('-proxy', type=str, help="proxy")
-  # parser.add_argument('user', type=str, nargs='*', help="user")
-  # parser.add_argument('-path', type=str, default='', help="path")
-  # args = parser.parse_args()
-
-  # bot.login(username='chabong.bong', password='Stop@here',  proxy=args.proxy)
-
+@csrf_exempt
+def account(request):
+  if request.method == 'POST':
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    response_data = {}
+    
+    Bot().login(username=username, password=password,  proxy=get_proxy())
+    
+    return HttpResponse(
+      json.dumps(response_data),
+      content_type="application/json"
+    )
+  else:
+    return HttpResponse(
+      json.dumps({"nothing to see": "this isn't happening"}),
+      content_type="application/json"
+    )
   # print(bot.get_user_info('1333985159'))
-  return render(
-    request,
-    'index.html',
-  )
 
-def login(request):
-  print(request)
+  try:
+      ua = request.META['HTTP_USER_AGENT']
+  except KeyError:
+      ua = 'unknown'
+  return HttpResponse("Your browser is %s" % request.POST['username'])

@@ -5,6 +5,46 @@
   {% include "shared/preloader.html" %}
   {% include "shared/sidebar.html" %}
   {% include "shared/toolbar.html" %}
+    
+  <main class="main-container">
 
-
+      <div class="main-content">
+        <div class="col-md-6 col-lg-4">
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-center">Add Instagrams Account</button>
+          <!-- Modal -->
+          <div class="modal modal-center fade" id="modal-center" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Add Account Instagrams</h5>
+                  <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="account-form" method="post" action="account">
+                    {% csrf_token %}
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">@</span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Username" id="username" aria-describedby="basic-addon1">
+                    </div>
+                    <br>
+                    <div class="input-group">
+                      <input type="password" class="form-control" placeholder="Password" id="password">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-bold btn-pure btn-primary">Save</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
 {% endblock %}

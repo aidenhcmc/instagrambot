@@ -80,10 +80,7 @@ class API(object):
                     'https': scheme + self.proxy,
                 }
                 self.session.proxies.update(proxies)
-            if (
-                    self.SendRequest('si/fetch_headers/?challenge_type=signup&guid=' + self.generateUUID(False),
-                                     None, True)):
-
+            if (self.SendRequest('si/fetch_headers/?challenge_type=signup&guid=' + self.generateUUID(False), None, True)):
                 data = {'phone_id': self.generateUUID(True),
                         '_csrftoken': self.LastResponse.cookies['csrftoken'],
                         'username': self.username,
@@ -91,19 +88,18 @@ class API(object):
                         'device_id': self.device_id,
                         'password': self.password,
                         'login_attempt_count': '0'}
-
                 if self.SendRequest('accounts/login/', self.generateSignature(json.dumps(data)), True):
-                    self.isLoggedIn = True
+                    # self.isLoggedIn = True
                     self.user_id = self.LastJson["logged_in_user"]["pk"]
                     self.rank_token = "%s_%s" % (self.user_id, self.uuid)
                     self.token = self.LastResponse.cookies["csrftoken"]
 
                     self.logger.info("Login success as %s!", self.username)
-                    return True
+                    return self
                 else:
                     self.logger.info("Login or password is incorrect.")
                     delete_credentials()
-                    return False
+                    return None
 
     def logout(self):
         if not self.isLoggedIn:
@@ -112,9 +108,9 @@ class API(object):
         return not self.isLoggedIn
 
     def SendRequest(self, endpoint, post=None, login=False):
-        # if (not self.isLoggedIn and not login):
-        #     self.logger.critical("Not logged in.")
-        #     raise Exception("Not logged in!")
+        if (not self.isLoggedIn and not login):
+            self.logger.critical("Not logged in.")
+            raise Exception("Not logged in!")
 
         self.session.headers.update({'Connection': 'close',
                                      'Accept': '*/*',
