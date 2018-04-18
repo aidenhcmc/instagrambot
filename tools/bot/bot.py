@@ -184,7 +184,7 @@ class Bot(API):
         # signal.signal(signal.SIGTERM, self.logout)
         # atexit.register(self.logout)
         print(response.LastJson)
-        return True
+        return response.LastJson
 
     def prepare(self):
         storage = load_checkpoint(self)

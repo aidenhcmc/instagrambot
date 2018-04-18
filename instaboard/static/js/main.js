@@ -14,17 +14,20 @@ function create_post() {
           username : $('#username').val(),
           password: $('#password').val() 
         }, 
-        
         success : function(json) {
-            console.log(json); 
-            console.log("success");
+          console.log(json);
+          if (json.status) {
+            console.log('success')
+          } else {
+            show_error($('#results'));
+          }
         },
-
-        // handle a non-successful response
         error : function(xhr,errmsg,err) {
-            $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+          show_error($('#results'));
         }
     });
 };
+
+function show_error(element) {
+  element.html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error</div>");
+}
