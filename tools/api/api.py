@@ -89,7 +89,7 @@ class API(object):
                         'password': self.password,
                         'login_attempt_count': '0'}
                 if self.SendRequest('accounts/login/', self.generateSignature(json.dumps(data)), True):
-                    # self.isLoggedIn = True
+                    self.isLoggedIn = True
                     self.user_id = self.LastJson["logged_in_user"]["pk"]
                     self.rank_token = "%s_%s" % (self.user_id, self.uuid)
                     self.token = self.LastResponse.cookies["csrftoken"]

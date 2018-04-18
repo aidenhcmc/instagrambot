@@ -7,8 +7,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
-from .helper.utils import *
+
 from .models import Account
+
+from .helper.utils import *
+from .helper.api_helper import *
+
 
 from tools import Bot
 
@@ -31,13 +35,14 @@ def account(request):
     password = request.POST.get('password')
     response_data = {}
 
-    login_response = Bot().login(username=username, password=password,  proxy=get_proxy())
-    if login_response is not None:
-      logged_account = login_response['logged_in_user']
-      full_name = logged_account['full_name']
-      profile_pic_url = logged_account['profile_pic_url']
-      profile_pic_id = logged_account['profile_pic_id']
-      phone_number = logged_account['phone_number']
+    response = Bot().login(username=username, password=password,  proxy=get_proxy())
+    
+    if response is not None:
+      account_json = response['logged_in_user']
+      full_name = account_json['full_name']
+      profile_pic_url = account_json['profile_pic_url']
+      profile_pic_id = account_json['profile_pic_id']
+      phone_number = account_json['phone_number']
 
       account = Account(username=username, password=password, full_name=full_name, profile_pic_url=profile_pic_url, profile_pic_id=profile_pic_id, phone_number=phone_number)
       account.save()
