@@ -13,9 +13,8 @@
     <ul class="menu">
       <li class="menu-category">Accounts</li>
 
-      {% for account in latest_account %}
         <li class="menu-item">
-          <a class="menu-link" href="{{ account.get_absolute_url }}">
+          <a class="menu-link" href="#">
             <span class="icon icon-avatar">
                 <span class="avatar">
                   {% if account.profile_pic_url %}
@@ -28,14 +27,13 @@
             <span class="title">@{{ account.username }}</span>
           </a>
         </li>
-      {% endfor %}
 
-      <li class="menu-category">Features</li>
+      <li class="menu-category">Action</li>
 
       <li class="menu-item">
         <a class="menu-link" href="#">
           <span class="icon ti-layout"></span>
-          <span class="title">Layout</span>
+          <span class="title">Follower / Following</span>
           <span class="arrow"></span>
         </a>
 

@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
-
+from django.shortcuts import get_object_or_404
 from .models import Account
 
 from .helper.utils import *
@@ -67,3 +67,31 @@ def account(request):
   except KeyError:
       ua = 'unknown'
   return HttpResponse("Your browser is %s" % request.POST['username'])
+
+@csrf_exempt
+def follow(request):
+  user_id = request.POST.get('user_id')
+  username = request.POST.get('username')
+  response_data = {}
+  account = get_object_or_404(Account, username=username)
+  bot = Bot()
+  bot.login(username=account.username, password=account.password,  proxy=get_proxy())
+  bot.follow_followers(user_id)
+  # Bot().login(username=username, password=password,  proxy=get_proxy())
+  
+  return HttpResponse(
+    json.dumps(response_data),
+    content_type="application/json"
+  )
+
+
+def detail(request, slug):
+  account = get_object_or_404(Account, slug=slug)
+
+  return render(request, 'detail.html', {
+      'account': account,
+  })
+
+
+
+
